@@ -30,7 +30,9 @@ class Department:
         candidate_grade = 0
         for subject in self.subjects:
             candidate_grade += int(candidate[subject])
-        candidate_grade = candidate_grade / len(self.subjects)
+        # last twist
+        candidate_grade = max(candidate_grade / len(self.subjects), float(candidate[6]))
+        candidate_grade = round(candidate_grade, 1)
         candidate_record.append(candidate_grade)
         self.candidates.append(tuple(candidate_record))
 
@@ -89,25 +91,12 @@ class University:
                 # self.candidates.extend(dpt.candidates)
                 dpt.clear_candidates()
 
-# debug = False
-# if __name__ == '__main__':
-#     # filename = '/Users/rbutaud/InCirT/Dev/University Admission Procedure (Python)/University Admission Procedure (Python)/task/applicants.txt'
-#     # filename = '/Users/rbutaud/InCirT/Dev/University Admission Procedure (Python)/University Admission Procedure (Python)/task/app1.txt'
-# else:
-# filename = 'applicants.txt'
-# if debug:
-# filename = '/Users/rbutaud/InCirT/Dev/University Admission Procedure (Python)/University Admission Procedure (Python)/task/applicant_list_5.txt'
-filename = '/Users/rbutaud/InCirT/Dev/University Admission Procedure (Python)/University Admission Procedure (Python)/task/applicants_test5.txt'
-debug = '/Users/rbutaud/InCirT/Dev/University Admission Procedure (Python)/University Admission Procedure (Python)/task/applicants_test_out.txt'
-
+filename = 'applicants.txt'
+debug = 'debug.txt'
 # basic length to be refined based on the minimum length for a record with at least one department choice
-BASIC_LENGTH = 4
-# if debug:
-#     n = 4
-# else:
+BASIC_LENGTH = 5
 n = int(input())
 
-# applicants = []
 # applicants format will be dictionary with:
 # key = (first_name, last_name) as tuple
 # content : [ physics chem math computer first_choice second_choice third_choice ]
@@ -118,7 +107,6 @@ with open(filename, "r") as file:
             record = line.split()
             applicant_name = tuple(record[0:2])
             applicant_record = record[2:]
-            # applicants.append(line.split())
             applicants[applicant_name] = applicant_record
             print(line.rstrip(), file=output)
 uni = University(applicants)
@@ -131,6 +119,7 @@ for d in uni.department_names:
     file_dept = f'{d.lower()}.txt'
     with open(file_dept, 'w') as output:
         for s in uni.departments[d].students:
+            print( *s)
             print( *s, file=output)
-        # print('')
+        print('')
 
